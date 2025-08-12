@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-// final dbRef = FirebaseDatabase.instance.ref();
+final dbRef = FirebaseDatabase.instance.ref();
 
 class GoalItem {
   String? id;
@@ -39,6 +39,7 @@ class _GoalsWidgetState extends State<GoalsWidget> {
   void initState() {
     super.initState();
     _goalController.text = widget.goalText;
+    _loadGoalsForDay();
   }
 
   // reload list if parent passes a new date
@@ -47,6 +48,7 @@ class _GoalsWidgetState extends State<GoalsWidget> {
     super.didUpdateWidget(old);
     if (_dayKey(old.date) != _dayKey(widget.date)) {
       _goalController.clear();
+      _loadGoalsForDay();
     }
   }
 
@@ -56,6 +58,40 @@ class _GoalsWidgetState extends State<GoalsWidget> {
     super.dispose();
   }
 
+  Future<void> _loadGoalsForDay() async {
+    final snap = await dbRef
+        .child('goal')
+        .orderByChild('date')
+        .equalTo(_dayKey(widget.date))
+        .get();
+
+    final data = snap.value as Map<dynamic, dynamic>?;
+    setState(() {
+      dailyGoals
+        ..clear()
+        ..addAll(
+          data?.entries.map((e) {
+            final m = e.value as Map<dynamic, dynamic>;
+            return GoalItem(
+              m['name'] ?? '',
+              m['isFinish'] == true,
+              id: e.key,
+            );
+          }) ??
+              [],
+        );
+    });
+  }
+
+  Future<void> _saveGoal(GoalItem g) async {
+    g.id ??= dbRef.child('goal').push().key;
+    if (g.id == null) return;
+    await dbRef.child('goal/${g.id}').update({
+      'name': g.title,
+      'isFinish': g.completed,
+      'date': _dayKey(widget.date),
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +114,7 @@ class _GoalsWidgetState extends State<GoalsWidget> {
                   value: g.completed,
                   onChanged: (v) {
                     setState(() => g.completed = v ?? false);
-                    // save goal g
+                    _saveGoal(g);
                   },
                 ),
               );
@@ -109,7 +145,7 @@ class _GoalsWidgetState extends State<GoalsWidget> {
                   final g = GoalItem(text, widget.isFinish);
                   dailyGoals.add(g);
                   _goalController.clear();
-                  // save goal g
+                  _saveGoal(g);
                 });
               },
               child: const Text('Add'),

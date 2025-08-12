@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-// final dbRef = FirebaseDatabase.instance.ref();
+final dbRef = FirebaseDatabase.instance.ref();
 
 class ProfileScreen extends StatefulWidget {
 
@@ -29,10 +29,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await userInit();
   }
 
+
+  Future<void> _saveProfile() async {
+    if (userId == null) {
+      final k = dbRef.child('users').push().key;
+      if (k == null) return;
+      userId = k;
+    }
+    await dbRef.child('users/$userId').update({'name': nameCtrl.text, 'age': ageCtrl.text, 'height': heightCtrl.text, 'gender': selectedGender});
+  }
+
   Future<void> userInit() async {
     if (userId == null){
       return;
     }
+    final u = await dbRef.child('users/$userId').get();
     final data = u.value as Map<dynamic,dynamic>;
     setState(() {
       nameCtrl.text = data["name"];
@@ -81,9 +92,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         const SizedBox(height: 12),
         ElevatedButton(onPressed: () async {
           FocusScope.of(context).unfocus();
+          await _saveProfile();
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile saved!')));
           widget.openBottomNav();
-          },
+        },
             child: const Text('Confirm')),
         const SizedBox(height: 24),
         const Text('Daily Calorie Requirement:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),

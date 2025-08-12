@@ -8,3 +8,4 @@ class GoalsScreen extends StatelessWidget {
     super.key,
     required this.date,
   });
+  }

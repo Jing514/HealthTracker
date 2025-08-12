@@ -89,6 +89,33 @@ class _IntakeScreenState extends State<IntakeScreen> {
     await dbRef.child('intake/$intakeId').update({'calorie': _calController.text, 'water': _waterController.text, 'date': _dayKey(widget.date),});
   }
 
+  //weight check (date) and push
+  Future<void> _loadWeightId() async {
+    if (weightId != null){
+      return;
+    }
+    final u = await dbRef.child('weight').orderByChild('date').equalTo(_dayKey(widget.date)).get();
+    if(u.value == null){
+      final k = dbRef.child('weight').push().key;
+      if (k == null) return;
+      weightId = k;
+      await dbRef.child('weight/$weightId').update({'weight': "0", 'date': _dayKey(widget.date),});
+      return;
+    }
+    final data = u.value as Map<dynamic,dynamic>;
+    weightId = data.keys.first;
+  }
+
+  Future<void> _saveWeight() async {
+    if (weightId == null) {
+      final k = dbRef.child('weight').push().key;
+      if (k == null) return;
+      weightId = k;
+    }
+    print(weightId);
+    await dbRef.child('weight/$weightId').update({'weight': _weightController.text, 'date': _dayKey(widget.date),});
+  }
+
 
   @override
   Widget build(BuildContext context) {

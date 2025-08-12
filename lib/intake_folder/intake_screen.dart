@@ -56,7 +56,37 @@ class _IntakeScreenState extends State<IntakeScreen> {
     _waterController.text = "";
     _calController.text = "";
     _weightController.text = "";
+    await _loadIntakeId();
+    requirementC = calculateCalorieRequirement(gender, _weightController.text, height, age);
+    // print(requirementC);
+    // print(int.parse(_calController.text));
+    requirementW = calculateWaterRequirement(_weightController.text);
+  }
+  // intake check(date) and push
+  Future<void> _loadIntakeId() async {
+    if (intakeId != null){
+      return;
+    }
+    final u = await dbRef.child('intake').orderByChild('date').equalTo(_dayKey(widget.date)).get();
+    if(u.value == null){
+      final k = dbRef.child('intake').push().key;
+      if (k == null) return;
+      intakeId = k;
+      await dbRef.child('intake/$intakeId').update({'calorie': "0", 'water': "0", 'date': _dayKey(widget.date),});
+      return;
+    }
+    final data = u.value as Map<dynamic,dynamic>;
+    intakeId = data.keys.first;
+  }
 
+  Future<void> _saveIntake() async {
+    if (intakeId == null) {
+      final k = dbRef.child('intake').push().key;
+      if (k == null) return;
+      intakeId = k;
+    }
+    print(intakeId);
+    await dbRef.child('intake/$intakeId').update({'calorie': _calController.text, 'water': _waterController.text, 'date': _dayKey(widget.date),});
   }
 
 

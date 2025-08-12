@@ -57,6 +57,10 @@ class _IntakeScreenState extends State<IntakeScreen> {
     _calController.text = "";
     _weightController.text = "";
     await _loadIntakeId();
+    await _loadIntake();
+    await _loadWeightId();
+    await _loadWeight();
+    await _loadProfile();
     requirementC = calculateCalorieRequirement(gender, _weightController.text, height, age);
     // print(requirementC);
     // print(int.parse(_calController.text));
@@ -116,6 +120,58 @@ class _IntakeScreenState extends State<IntakeScreen> {
     await dbRef.child('weight/$weightId').update({'weight': _weightController.text, 'date': _dayKey(widget.date),});
   }
 
+  //load intake
+  Future<void> _loadIntake() async {
+    final snap = await dbRef.child('intake/$intakeId').get();
+    if (snap.value == null){
+      return;
+    }
+
+    final data = snap.value as Map<dynamic, dynamic>;
+
+    setState(() {
+      _waterController.text = data["water"];
+      _calController.text = data["calorie"];
+    });
+  }
+
+  //load weight
+  Future<void> _loadWeight() async {
+    final snap = await dbRef.child('weight/$weightId').get();
+    if (snap.value == null){
+      return;
+    }
+
+    final data = snap.value as Map<dynamic, dynamic>;
+
+    setState(() {
+      _weightController.text = data["weight"];
+    });
+  }
+
+  //load profile from users
+  Future<void> _loadProfile() async {
+    if (userId != null){
+      return;
+    }
+    final u = await dbRef.child('users').get();
+    if(u.value == null){
+      return;
+    }
+    final data = u.value as Map<dynamic,dynamic>;
+    userId = data.keys.first;
+
+    if (userId == null){
+      return;
+    }
+    final loadUser = await dbRef.child('users/$userId').get();
+    final user = loadUser.value as Map<dynamic,dynamic>;
+    setState(() {
+      age = user["age"];
+      gender = user["gender"];
+      height = user["height"];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

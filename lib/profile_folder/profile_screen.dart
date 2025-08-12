@@ -26,9 +26,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     init();
   }
   Future<void> init()async{
+    await _loadData();
     await userInit();
   }
 
+  Future<void> _loadData() async {
+    if (userId != null){
+      return;
+    }
+    final u = await dbRef.child('users').get();
+    final data = u.value as Map<dynamic,dynamic>;
+    userId = data.keys.first;
+  }
 
   Future<void> _saveProfile() async {
     if (userId == null) {

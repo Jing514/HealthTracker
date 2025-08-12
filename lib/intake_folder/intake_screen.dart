@@ -173,6 +173,8 @@ class _IntakeScreenState extends State<IntakeScreen> {
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     int cal;
@@ -214,7 +216,7 @@ class _IntakeScreenState extends State<IntakeScreen> {
           ElevatedButton(
               onPressed: () async {
                 FocusScope.of(context).unfocus();
-                //save data here
+                await _saveIntake();
                 if(!context.mounted)return;
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Intake saved!'))
@@ -244,7 +246,7 @@ class _IntakeScreenState extends State<IntakeScreen> {
           ElevatedButton(
               onPressed: () async {
                 FocusScope.of(context).unfocus();
-                //save data here
+                await _saveWeight();
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Weight saved!'))
                 );
@@ -258,6 +260,50 @@ class _IntakeScreenState extends State<IntakeScreen> {
 
           // percentage circles (calories and water)
           //https://pub.dev/packages/percentages_with_animation
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 1),
+            child: Row(
+              children: [
+                // Calorie circle
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text("Calorie completion"),
+                      SizedBox(height: 8),
+                      SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: CalorieCircle(
+                          intake: cal, //this
+                          target: requirementC>0?requirementC:100000, //this
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 16),
+                // Water circle
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text("Water completion"),
+                      SizedBox(height: 8),
+                      SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: WaterBar(
+                          currentIntake: water, //this
+                          goal: requirementW > 0? requirementW:100000, //this
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 20),
 
         ],
       );

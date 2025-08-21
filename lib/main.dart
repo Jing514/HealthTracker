@@ -88,12 +88,22 @@ class _FitnessAppState extends State<FitnessApp> {
                     selectedDate = selectedDate.subtract(const Duration(days: 1));
                     isDisableSelectDate = true;
                   });
+                  Future.delayed(Duration(seconds: 4),(){
+                    setState(() {
+                      isDisableSelectDate = false;
+                    });
+                  });
                 }),
                 Text(formatDate(selectedDate), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 IconButton(icon: const Icon(Icons.arrow_right), onPressed: isDisableSelectDate?null:(){
                   setState((){
                     selectedDate = selectedDate.add(const Duration(days: 1));
                     isDisableSelectDate = true;
+                  });
+                  Future.delayed(Duration(seconds: 4),(){
+                    setState(() {
+                      isDisableSelectDate = false;
+                    });
                   });
                 }),
               ]),

@@ -315,6 +315,6 @@ class _IntakeScreenState extends State<IntakeScreen> {
 /// load profile fake details
 /// profile have data - open button bar
 /// water widget - circle
+///
 /// profile requirement not working
-/// left right
 /// tab colour change profile

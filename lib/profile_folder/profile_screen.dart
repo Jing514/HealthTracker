@@ -19,6 +19,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final heightCtrl = TextEditingController();
   String selectedGender = "";
   Color selectedColor = Colors.blue;
+  bool isDisableProfile = false;
+
 
   @override
   void initState() {
@@ -99,12 +101,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
           },
         ),
         const SizedBox(height: 12),
-        ElevatedButton(onPressed: () async {
+
+///////////////////// Delay button
+
+        ElevatedButton(onPressed: isDisableProfile?null: () async {
+          if (isDisableProfile) return;
+          setState(() => isDisableProfile = true);
+
           FocusScope.of(context).unfocus();
           await _saveProfile();
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile saved!')));
           widget.openBottomNav();
         },
+/////////////////
+
             child: const Text('Confirm')),
         const SizedBox(height: 24),
         const Text('Daily Calorie Requirement:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),

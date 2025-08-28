@@ -132,13 +132,13 @@ class _FitnessAppState extends State<FitnessApp> {
 MaterialColor createMaterialColor(Color c) {
   final strengths = <double>[.05] + List.generate(9, (i) => 0.1 * (i + 1));
   final swatch = <int, Color>{};
-  final r = c.red, g = c.green, b = c.blue;
+  final r = c.r, g = c.g, b = c.b;
   for (var s in strengths) {
     final ds = 0.5 - s;
     swatch[(s * 1000).round()] = Color.fromRGBO(
-      r + ((ds < 0 ? r : 255 - r) * ds).round(),
-      g + ((ds < 0 ? g : 255 - g) * ds).round(),
-      b + ((ds < 0 ? b : 255 - b) * ds).round(),
+      r + ((ds < 0 ? r : 255 - r) * ds).round() as int,
+      g + ((ds < 0 ? g : 255 - g) * ds).round() as int,
+      (b + ((ds < 0 ? b : 255 - b) * ds).round()) as int,
       1,
     );
   }

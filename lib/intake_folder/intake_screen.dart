@@ -61,6 +61,7 @@ class _IntakeScreenState extends State<IntakeScreen> {
     await _loadWeightId();
     await _loadWeight();
     await _loadProfile();
+
     requirementC = calculateCalorieRequirement(gender, _weightController.text, height, age);
     // print(requirementC);
     // print(int.parse(_calController.text));
@@ -258,6 +259,17 @@ class _IntakeScreenState extends State<IntakeScreen> {
               child: const Text('Confirm')),
           const SizedBox(height: 12),
 
+
+          const Text(
+          'Daily Calorie Requirement:',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          Text(
+          requirementC.toInt().toString(),
+          style: const TextStyle(fontSize: 16),
+          textAlign: TextAlign.center,
+          ),
           // percentage circles (calories and water)
           //https://pub.dev/packages/percentages_with_animation
 
@@ -311,10 +323,4 @@ class _IntakeScreenState extends State<IntakeScreen> {
 }
 
 
-/// profile long confirm button line
-/// load profile fake details
-/// profile have data - open button bar
 /// water widget - circle
-///
-/// profile requirement not working
-/// tab colour change profile

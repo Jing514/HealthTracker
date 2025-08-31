@@ -65,11 +65,18 @@ class _FitnessAppState extends State<FitnessApp> {
       GoalsScreen(date: selectedDate),
       GraphScreen(date: selectedDate),
       IntakeScreen(date: selectedDate),
-      ProfileScreen(openBottomNav: (){
-        setState(() {
-          isDisableBottomNav = false;
-        });
-      },),
+      ProfileScreen(
+        openBottomNav: (){
+          setState(() {
+            isDisableBottomNav = false;
+          });
+        },
+        setBottomColor: (Color c){
+          setState(() {
+            tabColor = c;
+          });
+        },
+      ),
     ];
 
     return Theme(
@@ -110,14 +117,24 @@ class _FitnessAppState extends State<FitnessApp> {
             ),
           Expanded(child: pages[tabIndex]),
         ]),
-        bottomNavigationBar: BottomNavigationBar(
+          bottomNavigationBar: isDisableBottomNav?
+          Container(
+            color: tabColor,
+            height: 55,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text('Please Tap Confirm', textAlign: TextAlign.center, style: TextStyle(fontSize: 20,color: Colors.white),),
+            ),
+          )
+          :BottomNavigationBar(
           backgroundColor: tabColor,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white70,
           currentIndex: tabIndex,
-          onTap: (i) => setState(() => tabIndex = isDisableBottomNav? 3:i),
+          onTap: (i) => setState(() => tabIndex = i),
           type: BottomNavigationBarType.fixed,
-          items: const [
+          items:
+          const [
             BottomNavigationBarItem(icon: Icon(Icons.check_box), label: 'Daily Goals'),
             BottomNavigationBarItem(icon: Icon(Icons.show_chart), label: 'Intake Graph'),
             BottomNavigationBarItem(icon: Icon(Icons.input), label: 'Daily Intake'),
@@ -132,13 +149,13 @@ class _FitnessAppState extends State<FitnessApp> {
 MaterialColor createMaterialColor(Color c) {
   final strengths = <double>[.05] + List.generate(9, (i) => 0.1 * (i + 1));
   final swatch = <int, Color>{};
-  final r = c.r, g = c.g, b = c.b;
+  final r = c.red, g = c.green, b = c.blue;
   for (var s in strengths) {
     final ds = 0.5 - s;
     swatch[(s * 1000).round()] = Color.fromRGBO(
-      r + ((ds < 0 ? r : 255 - r) * ds).round() as int,
-      g + ((ds < 0 ? g : 255 - g) * ds).round() as int,
-      (b + ((ds < 0 ? b : 255 - b) * ds).round()) as int,
+      r + ((ds < 0 ? r : 255 - r) * ds).round(),
+      g + ((ds < 0 ? g : 255 - g) * ds).round(),
+      b + ((ds < 0 ? b : 255 - b) * ds).round(),
       1,
     );
   }

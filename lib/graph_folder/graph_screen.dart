@@ -161,15 +161,12 @@ class _GraphScreenState extends State<GraphScreen> {
       height = user["height"];
     });
   }
-  /////////////////////////////
 
 
   @override
   Widget build(BuildContext context) {
 
-    // calculating percentages of the last 7 days
-
-
+    // showing the percentages of the last 7 days
     return flag?
     Center(child: CircularProgressIndicator())
         :Column(

@@ -63,7 +63,7 @@ class _IntakeScreenState extends State<IntakeScreen> {
     await _loadProfile();
 
     requirementC = calculateCalorieRequirement(gender, _weightController.text, height, age);
-    // print(requirementC);
+    // print(requirementC.toString());
     // print(int.parse(_calController.text));
     requirementW = calculateWaterRequirement(_weightController.text);
   }

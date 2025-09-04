@@ -3,11 +3,12 @@ double calculateCalorieRequirement(String gender, String weight, String height, 
   double bmr;
   if (gender.toLowerCase() == "male") {
     bmr = 66.47 + (13.75 * double.parse(weight)) + (5.003 * double.parse(height)) - (6.755 * double.parse(age));
+    return 1.2*bmr;
   } else {
     bmr = 655.1 + (9.563 * double.parse(weight)) + (1.850 * double.parse(height)) - (4.676 * double.parse(age));
-    return 0;
+    // print(bmr);
+    return 1.2*bmr;
   }
-  return bmr * 1.2;
 }
 
 double calculateWaterRequirement(String weight){

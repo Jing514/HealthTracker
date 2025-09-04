@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project/common/widget.dart';
 import 'package:project/intake_folder/widget/intake_widget.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:project/common/function.dart';

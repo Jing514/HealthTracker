@@ -29,16 +29,6 @@ class _GraphScreenState extends State<GraphScreen> {
   List<String> xLabels = [];
   bool flag = true;
 
-//
-// class GraphScreen extends StatelessWidget {
-//   final Map<String, DayData> dailyData;
-//   final DateTime selectedDate;
-//   final String age = "";
-//   final String height = "";
-//   final String gender = "";
-//
-
-  //////////////////////////////
   String _dayKey(DateTime d) =>
       '${d.year.toString().padLeft(4, '0')}-'
           '${d.month.toString().padLeft(2, '0')}-'
@@ -68,7 +58,7 @@ class _GraphScreenState extends State<GraphScreen> {
     intakeId = null;
     weightId = null;
     await _loadProfile();
-    await _load7daysData();
+    await _load7daysData(); //not working
 
     setState(() {
       flag = false;

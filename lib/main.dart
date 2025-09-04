@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) =>
-      MaterialApp(title: 'Health Tracker', theme: ThemeData(primarySwatch: Colors.blue), home: const FitnessApp());
+      MaterialApp(title: 'Health Tracker',debugShowCheckedModeBanner: false, theme: ThemeData(primarySwatch: Colors.blue), home: const FitnessApp());
 }
 
 class FitnessApp extends StatefulWidget {

@@ -287,7 +287,7 @@ class _IntakeScreenState extends State<IntakeScreen> {
                         width: 100,
                         child: CalorieCircle(
                           intake: cal, //this
-re                          target: requirementC>0?requirementC:100000,
+                          target: requirementC>0?requirementC:100000,
                         ),
                       ),
                     ],

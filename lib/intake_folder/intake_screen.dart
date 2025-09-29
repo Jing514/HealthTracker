@@ -287,7 +287,7 @@ class _IntakeScreenState extends State<IntakeScreen> {
                         width: 100,
                         child: CalorieCircle(
                           intake: cal, //this
-                          target: requirementC>0?requirementC:100000, //this
+re                          target: requirementC>0?requirementC:100000,
                         ),
                       ),
                     ],
@@ -305,7 +305,7 @@ class _IntakeScreenState extends State<IntakeScreen> {
                         width: 100,
                         child: WaterBar(
                           currentIntake: water, //this
-                          goal: requirementW > 0? requirementW:100000, //this
+                          goal: requirementW > 0? requirementW:2625,
                         ),
                       ),
                     ],
@@ -314,7 +314,6 @@ class _IntakeScreenState extends State<IntakeScreen> {
               ],
             ),
           ),
-          SizedBox(height: 20),
 
         ],
       );
